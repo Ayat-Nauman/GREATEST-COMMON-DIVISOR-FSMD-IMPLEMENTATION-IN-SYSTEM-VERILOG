@@ -4,7 +4,7 @@ A hardware **Greatest Common Divisor (GCD)** unit implemented as a classic **FSM
 
 ---
 
-## 🎯 What This Project Does
+## GCD Algorithm
 
 Computes `GCD(xi, yi)` for two 6-bit operands using the **subtractive Euclidean algorithm** — no divider needed, just a comparator and a subtractor:
 
@@ -48,10 +48,16 @@ assign x_neq_y = (x != y) ? 1 : 0; // → controller
 assign y_x = y - x;
 assign x_y = x - y;
 ```
+<img width="4456" height="2940" alt="DATAPATH" src="https://github.com/user-attachments/assets/cfd021fd-5234-430a-bff8-ac71fc351123" />
 
 Registers `x`, `y`, `d` load only when their `*_ld` control signal is asserted — otherwise they hold. `x_lt_y` and `x_neq_y` are the two status flags the algorithm's `while`/`if` need to branch on.
 
 ---
+###  FSM Flowchart
+<img width="1644" height="2547" alt="FSM FLOWCHART" src="https://github.com/user-attachments/assets/9d36dd43-71c3-4230-b938-b80869fbef7e" />
+
+###  FSMD Flowchart 
+<img width="2091" height="3000" alt="FSMD FLOWCHART" src="https://github.com/user-attachments/assets/23682eb7-994b-47a0-a9fe-d4dbc9803433" />
 
 ## 🕹️ Controller — Built with Quartus's State Machine Wizard
 
@@ -76,65 +82,27 @@ Instead of hand-writing the FSM, it was **drawn graphically**:
 | `state5` | `y_ld=1, y_sel=1` | **SUBTRACT Y** — `y ← y − x` (when `x < y`) |
 | `state6` | `d_ld=1` | **DONE** — `d ← x` (== y), the GCD result |
 
-### Synthesizer-Extracted State Diagram (Sanity Check)
+###  State Diagram 
 
-Quartus's synthesizer independently re-derives the state machine from the compiled netlist:
+State diagram made in Quartus from which HDL code is generated:
+<img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/a6a38f92-1490-4c14-8078-632bfb4877e8" />
+
 
 ```
-state1 --go_i--> state2 --(unconditional)--> state3
-state3 --(x_neq_y)&(x_lt_y)--> state5 --> state3
-state3 --(x_neq_y)&(~x_lt_y)--> state4 --> state3
-state3 --~x_neq_y--> state6
-state6 --go_i--> state2      state6 --~go_i--> state1
-state1 --~go_i--> state1 (self-loop)
 ```
+### RTL Diagram
+Top view:
+<img width="920" height="341" alt="GCD_RTL_DIAGRAM_TOP_VIEW" src="https://github.com/user-attachments/assets/19c354a9-95aa-451b-a91c-d29e1481412a" />
 
-This matches the original graphical design exactly — confirming the auto-generated HDL is correct.
+Controller:
+<img width="490" height="371" alt="CONTROLLER_RTL_DIAGRAM" src="https://github.com/user-attachments/assets/0dc3efd9-57f2-4616-b20c-bad4c726b024" />
 
----
+Datapath:
+<img width="827" height="277" alt="GCD_DATAPATH_RTL" src="https://github.com/user-attachments/assets/dd943827-dece-4396-a48e-b2023a15931d" />
 
-## 🔗 Top-Level Integration (`ugcd`)
-
-```systemverilog
-module ugcd #(parameter N = 6)(
-    input  logic          clk,
-    input  logic          rst,
-    input  logic          go_i,
-    input  logic [N-1:0]  xi,
-    input  logic [N-1:0]  yi,
-    output logic [N-1:0]  d_o
-);
-    logic x_ld, y_ld, x_sel, y_sel, d_ld;
-    logic x_lt_y, x_neq_y;
-
-    controller fsm (
-        .clk(clk), .rst(rst), .go_i(go_i),
-        .x_lt_y(x_lt_y), .x_neq_y(x_neq_y),
-        .x_ld(x_ld), .y_ld(y_ld),
-        .x_sel(x_sel), .y_sel(y_sel), .d_ld(d_ld)
-    );
-
-    gcd_datapath #(.N(N)) dp (
-        .clk(clk), .rst(rst), .xi(xi), .yi(yi), .d_o(d_o),
-        .x_sel(x_sel), .y_sel(y_sel),
-        .x_ld(x_ld), .y_ld(y_ld), .d_ld(d_ld),
-        .x_lt_y(x_lt_y), .x_neq_y(x_neq_y)
-    );
-endmodule
-```
-
-Controller and datapath only ever talk through control signals (out) and status flags (in) — the textbook FSMD interface.
-
----
 
 ## ✅ Testbench & Simulation (ModelSim)
-
-```systemverilog
-xi = 6'd56; yi = 6'd48; go_i = 1; #10; go_i = 0; #170; // GCD = 8
-xi = 6'd39; yi = 6'd52; go_i = 1; #10; go_i = 0; #150; // GCD = 13
-```
-
-A one-cycle `go_i` pulse starts each computation; the testbench then waits long enough for the FSM to walk `state2 → state3 → (state4|state5) → state3 → … → state6` and latch the result.
+<img width="892" height="98" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/86aec678-ce88-4c15-8744-2edaa57e996b" />
 
 | xi | yi | Expected GCD | Simulated `d_o` |
 |---|---|---|---|
@@ -151,15 +119,7 @@ All six vectors — including the three of primary interest, `(56,48)`, `(24,24)
 
 ## 📊 Synthesis Results (Quartus Prime Lite 18.1.0, Cyclone V)
 
-| Metric | Value |
-|---|---|
-| Logic utilization | **17 / 56,480 ALMs** (< 1%) |
-| Total registers | 24 |
-| Total pins | 21 / 268 (8%) |
-| Target device | Cyclone V, `5CGXFC7C7F23C8` |
-| Flow status | Successful |
-
-Tiny footprint, as expected: three 6-bit registers (`x`, `y`, `d`) plus a small FSM state register, two subtractors, two comparators, and Moore output-decode logic.
+<img width="332" height="307" alt="GCD UTILIZATION REPORT" src="https://github.com/user-attachments/assets/f3eb7a92-8530-4356-8b6e-11475913f25f" />
 
 ---
 
@@ -172,7 +132,3 @@ Tiny footprint, as expected: three 6-bit registers (`x`, `y`, `d`) plus a small 
 - **Target device:** Intel/Altera Cyclone V, `5CGXFC7C7F23C8`
 
 ---
-
-## 📄 License
-
-Add your preferred license here (e.g. MIT).
