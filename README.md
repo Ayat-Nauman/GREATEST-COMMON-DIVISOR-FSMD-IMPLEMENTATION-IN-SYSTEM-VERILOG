@@ -70,7 +70,7 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 
 ### State Diagram
 <p align="center">
-  <img src="<img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/04e73ee3-2649-4399-8f26-2f74c3fdba47" />" width="450" alt="Description" />
+<img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/82800ba4-3d8f-4881-8d7d-40415d7eb9f2" />
 </p>
 ---
 
