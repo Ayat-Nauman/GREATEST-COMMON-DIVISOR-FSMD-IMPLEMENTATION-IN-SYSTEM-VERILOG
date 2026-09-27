@@ -9,7 +9,12 @@ A hardware Greatest Common Divisor (GCD) unit implemented as a classic FSMD (Fin
 Computes $\gcd(x_i, y_i)$ for two 6-bit operands using the subtractive Euclidean algorithm — requiring no division hardware, only a comparator and subtractor.
 
 ```systemverilog
-// [GCD Algorithm Code snippet is to be pasted here]
+function
+gcd(x, y):
+       while (x != y):
+              if (x < y):  y = y - x
+              else:        x = x - y
+       return x   // == y, the GCD
 ```
 
 ### Verified Test Cases
@@ -30,18 +35,6 @@ An FSMD decouples digital designs into two cooperating components:
 * **Datapath** — Registers, arithmetic logic units (ALUs), multiplexers, and comparators. Executes actual data processing combinationally and via registers without any sequencing awareness.
 * **Controller (FSM)** — A pure Moore state machine that sequences the datapath by asserting control signals (load enables, select lines), branching purely on status flags returned from the datapath.
 
-```text
-       +-------------------------------------------------+
-       |                   Controller                    |
-       |                   (Moore FSM)                   |
-       +-------------------------------------------------+
-            | Control Signals              ^ Status Flags
-            v (x_ld, y_ld, x_sel, etc.)    | (x_lt_y, x_neq_y)
-       +-------------------------------------------------+
-       |                    Datapath                     |
-       |           (ALU, Registers, Muxes)               |
-       +-------------------------------------------------+
-```
 
 ### Advantages
 
@@ -49,16 +42,6 @@ An FSMD decouples digital designs into two cooperating components:
 * **Reusability:** The controller logic can drive alternate datapaths (and vice versa) with minimal friction.
 * **Tool-Assisted Flow:** Graphical creation of pure Moore FSMs enables auto-generation of clean HDL and netlist cross-verification.
 * **Direct Mapping:** Translates algorithmic steps directly into state transitions and branch conditions.
-
----
-
-## 🧱 Datapath (`gcd_datapath`)
-
-```systemverilog
-// [Datapath SystemVerilog Code snippet is to be pasted here]
-```
-
-Registers `x`, `y`, and `d` load only when their respective `*_ld` control signal is asserted. The status flags `x_lt_y` and `x_neq_y` feed back directly into the controller's condition logic.
 
 ---
 
@@ -86,9 +69,10 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 | `state6` | `d_ld = 1` | **DONE** — Register result $d \leftarrow x$ (GCD output ready) |
 
 ### State Diagram
-
-![State Diagram](path/to/state_diagram.png)
-
+<p align="center">
+  <img src="<img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/5cba151a-a31a-48bb-92be-2ab83e98ef2b" />
+" width="450" alt="Description" />
+</p>
 ---
 
 ## 🖼️ RTL Diagrams
