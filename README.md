@@ -74,10 +74,7 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 | 56 | 48 | 8 | 8 | **PASS** |
 | 39 | 52 | 13 | 13 | **PASS** |
 
-<p align="center">
 <img width="892" height="98" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/98fa7c84-230c-4d90-b904-b656a1c1f308" />
-</p>
----
 
 ## Utilization Report
 
