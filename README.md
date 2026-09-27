@@ -99,7 +99,8 @@ Controller:
 
 Datapath:
 <img width="827" height="277" alt="GCD_DATAPATH_RTL" src="https://github.com/user-attachments/assets/dd943827-dece-4396-a48e-b2023a15931d" />
-
+```
+```
 
 ## ✅ Testbench & Simulation (ModelSim)
 <img width="892" height="98" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/86aec678-ce88-4c15-8744-2edaa57e996b" />
