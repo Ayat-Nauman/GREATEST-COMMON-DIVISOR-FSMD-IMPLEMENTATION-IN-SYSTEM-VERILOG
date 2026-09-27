@@ -88,8 +88,6 @@ State diagram made in Quartus from which HDL code is generated:
 <img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/a6a38f92-1490-4c14-8078-632bfb4877e8" />
 
 
-```
-```
 ### RTL Diagram
 Top view:
 <img width="920" height="341" alt="GCD_RTL_DIAGRAM_TOP_VIEW" src="https://github.com/user-attachments/assets/19c354a9-95aa-451b-a91c-d29e1481412a" />
@@ -99,8 +97,7 @@ Controller:
 
 Datapath:
 <img width="827" height="277" alt="GCD_DATAPATH_RTL" src="https://github.com/user-attachments/assets/dd943827-dece-4396-a48e-b2023a15931d" />
-```
-```
+
 
 ## ✅ Testbench & Simulation (ModelSim)
 <img width="892" height="98" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/86aec678-ce88-4c15-8744-2edaa57e996b" />
