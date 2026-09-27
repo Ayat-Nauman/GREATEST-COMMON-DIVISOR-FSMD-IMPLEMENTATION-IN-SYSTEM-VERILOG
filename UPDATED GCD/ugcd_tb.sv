@@ -1,0 +1,67 @@
+`timescale 1ns/1ps
+
+module ugcd_tb;
+
+parameter N = 6;
+logic			   clk;
+logic			   rst;
+logic  [N-1:0]  xi;
+logic  [N-1:0]  yi;
+logic			  go_i;
+logic  [N-1:0] d_o;
+
+//DUT Instantiation
+ugcd #(.N(N))dut(
+.clk(clk),
+.rst(rst),
+.go_i(go_i),
+.xi(xi),
+.yi(yi),
+.d_o(d_o)
+);
+
+//clock generation
+always begin
+	clk = ~clk;
+	#5;
+end
+
+// Test cases
+initial begin
+clk = 0; rst = 1; go_i = 0; xi = 0; yi = 0; #20;
+rst = 0; #10;
+
+// GCD(12, 4) = 4
+xi = 6'd12; yi = 6'd4; go_i = 1; #10;
+go_i = 0;
+#100; // Wait for FSM to complete
+
+// GCD(3, 9) = 3
+xi = 6'd3; yi = 6'd9; go_i = 1; #10;
+go_i = 0;
+#100;
+
+// GCD(14, 7) = 7
+xi = 6'd14; yi = 6'd7; go_i = 1; #10;
+go_i = 0;
+#100;
+
+// GCD(24,24) = 24
+xi = 6'd24; yi = 6'd24; go_i = 1; #10;
+go_i = 0;
+#100;
+
+// GCD(56,48) = 8
+xi = 6'd56; yi = 6'd48; go_i = 1; #10;
+go_i = 0;
+#170;
+
+// GCD(39, 52) = 8
+xi = 6'd39; yi = 6'd52; go_i = 1; #10;
+go_i = 0;
+#150;
+	 
+$stop;
+end
+
+endmodule
