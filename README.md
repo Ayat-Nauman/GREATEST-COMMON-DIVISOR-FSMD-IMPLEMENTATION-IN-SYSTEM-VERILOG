@@ -38,26 +38,6 @@ The following are the steps for creating a datapath:
 2. Identify functional units, i.e., two comparators and two subtractors.
 3. To connect the above two, Muxes may be used.
 
-Datapath:
-<p align="center">
-<img width="501" height="209" alt="DATAPATH" src="https://github.com/user-attachments/assets/b4503840-1449-41d5-ba5a-c65240e2b15d" />
-</p>
----
-
-## FSM Flowchart
-FSM Flowchart only contains the signals of the FSM, excluding all the assignments of the datapath.
-<p align="center">
-<img width="501" height="209" alt="FSM FLOWCHART" src="https://github.com/user-attachments/assets/255b23a4-2557-44c2-9d4a-a58f55258f19" />
-</p>
----
-
-## FSMD Flowchart
-FSMD Flowchart contains the signals of the FSM, including all the assignments of the datapath.
-<p align="center">
-<img width="2091" height="3000" alt="FSMD FLOWCHART" src="https://github.com/user-attachments/assets/8cec7485-d25b-4fe0-b7a7-42dd464b19fe" />
-</p>
----
-
 ## Controller — Built with Quartus State Machine Wizard
 
 The FSM controller was designed graphically using Intel Quartus Prime:
@@ -81,32 +61,7 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 | `state5` | `y_ld = 1`, `y_sel = 1` | **SUBTRACT Y** — Execute $y \leftarrow y - x$ (when $x < y$) |
 | `state6` | `d_ld = 1` | **DONE** — Register result $d \leftarrow x$ (GCD output ready) |
 
-### State Diagram
-<p align="center">
-<img width="501" height="209" alt="GCD_FSM_QUARTUS" src="https://github.com/user-attachments/assets/82800ba4-3d8f-4881-8d7d-40415d7eb9f2" />
-</p>
----
 
-## 🖼️ RTL Diagrams
-
-### Top-Level View (`ugcd`)
-
-<p align="center">
-<img width="501" height="209" alt="GCD_RTL_DIAGRAM_TOP_VIEW" src="https://github.com/user-attachments/assets/d3476eaf-1e7e-4ac1-b274-0b8724ccaa5d" />
-</p>
-
-### Controller FSM RTL
-
-<p align="center">
-<img width="501" height="209" alt="CONTROLLER_RTL_DIAGRAM" src="https://github.com/user-attachments/assets/2bfaa756-0b65-452f-9d79-cb1a3c8a2bf3" />
-</p>
-
-### Datapath RTL
-
-<p align="center">
-<img width="501" height="209" alt="CONTROLLER_RTL_DIAGRAM" src="https://github.com/user-attachments/assets/2bfaa756-0b65-452f-9d79-cb1a3c8a2bf3" />
-</p>
----
 
 ## ✅ Testbench & Verification (ModelSim)
 
@@ -120,7 +75,7 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 | 39 | 52 | 13 | 13 | **PASS** |
 
 <p align="center">
-<img width="501" height="209" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/0707c7cc-5e84-40fe-975a-a95078963af3" />
+<img width="892" height="98" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/98fa7c84-230c-4d90-b904-b656a1c1f308" />
 </p>
 ---
 
@@ -128,7 +83,7 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 
 The utilization report generated from Quartus is given below:
 <p align="center">
-<img width="501" height="209" alt="GCD UTILIZATION REPORT" src="https://github.com/user-attachments/assets/44e9ff8c-0320-4040-922e-24ed7100405a" />
+<img width="332" height="307" alt="GCD UTILIZATION REPORT" src="https://github.com/user-attachments/assets/7b4638fd-4dc6-4c2a-9e3d-c8d4f39aa563" />
 </p>
 
 ---
