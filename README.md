@@ -17,22 +17,11 @@ gcd(x, y):
        return x   // == y, the GCD
 ```
 
-### Verified Test Cases
-
-- $\gcd(12, 4) = 4$
-- $\gcd(3, 9) = 3$
-- $\gcd(14, 7) = 7$
-- $\gcd(24, 24) = 24$
-- $\gcd(56, 48) = 8$
-- $\gcd(39, 52) = 13$
-
----
-
-## 🧠 What Is an FSMD, and Why Use One?
+## What Is an FSMD, and Why Use One?
 
 An FSMD decouples digital designs into two cooperating components:
 
-* **Datapath** — Registers, arithmetic logic units (ALUs), multiplexers, and comparators. Executes actual data processing combinationally and via registers without any sequencing awareness.
+* **Datapath** — Registers, arithmetic logic units (ALUs), multiplexers, and comparators. Executes actual data processing combinatorially and via registers without any sequencing awareness.
 * **Controller (FSM)** — A pure Moore state machine that sequences the datapath by asserting control signals (load enables, select lines), branching purely on status flags returned from the datapath.
 
 
@@ -43,9 +32,33 @@ An FSMD decouples digital designs into two cooperating components:
 * **Tool-Assisted Flow:** Graphical creation of pure Moore FSMs enables auto-generation of clean HDL and netlist cross-verification.
 * **Direct Mapping:** Translates algorithmic steps directly into state transitions and branch conditions.
 
+### Steps of creating a datapath
+The following are the steps for creating a datapath:
+1. Identify the variables as FF registers, i.e., x,y,d_o.
+2. Identify functional units, i.e., two comparators and two subtractors.
+3. To connect the above two, Muxes may be used.
+
+Datapath:
+<p align="center">
+<img width="501" height="209" alt="DATAPATH" src="https://github.com/user-attachments/assets/b4503840-1449-41d5-ba5a-c65240e2b15d" />
+</p>
 ---
 
-## 🔄 Controller — Built with Quartus State Machine Wizard
+## FSM Flowchart
+FSM Flowchart only contains the signals of the FSM, excluding all the assignments of the datapath.
+<p align="center">
+<img width="501" height="209" alt="FSM FLOWCHART" src="https://github.com/user-attachments/assets/255b23a4-2557-44c2-9d4a-a58f55258f19" />
+</p>
+---
+
+## FSMD Flowchart
+FSMD Flowchart contains the signals of the FSM, including all the assignments of the datapath.
+<p align="center">
+<img width="2091" height="3000" alt="FSMD FLOWCHART" src="https://github.com/user-attachments/assets/8cec7485-d25b-4fe0-b7a7-42dd464b19fe" />
+</p>
+---
+
+## Controller — Built with Quartus State Machine Wizard
 
 The FSM controller was designed graphically using Intel Quartus Prime:
 
@@ -82,10 +95,17 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 <img width="501" height="209" alt="GCD_RTL_DIAGRAM_TOP_VIEW" src="https://github.com/user-attachments/assets/d3476eaf-1e7e-4ac1-b274-0b8724ccaa5d" />
 </p>
 
-### Submodules Breakdown
+### Controller FSM RTL
 
-![Submodules Breakdown](path/to/submodules_rtl.png)
+<p align="center">
+<img width="501" height="209" alt="CONTROLLER_RTL_DIAGRAM" src="https://github.com/user-attachments/assets/2bfaa756-0b65-452f-9d79-cb1a3c8a2bf3" />
+</p>
 
+### Datapath RTL
+
+<p align="center">
+<img width="501" height="209" alt="CONTROLLER_RTL_DIAGRAM" src="https://github.com/user-attachments/assets/2bfaa756-0b65-452f-9d79-cb1a3c8a2bf3" />
+</p>
 ---
 
 ## ✅ Testbench & Verification (ModelSim)
@@ -99,16 +119,21 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 | 56 | 48 | 8 | 8 | **PASS** |
 | 39 | 52 | 13 | 13 | **PASS** |
 
+<p align="center">
+<img width="501" height="209" alt="GCD_OUTPUT_WAVEFORM" src="https://github.com/user-attachments/assets/0707c7cc-5e84-40fe-975a-a95078963af3" />
+</p>
 ---
 
-## 📊 Synthesis Results
+## Utilization Report
 
-* **Tool:** Intel Quartus Prime Lite Edition 18.1.0 (Build 625)
-* **Target Device:** Cyclone V FPGA (`5CGXFC7C7F23C8`)
+The utilization report generated from Quartus is given below:
+<p align="center">
+<img width="501" height="209" alt="GCD UTILIZATION REPORT" src="https://github.com/user-attachments/assets/44e9ff8c-0320-4040-922e-24ed7100405a" />
+</p>
 
 ---
 
-## 🛠️ Tools & Technologies
+## Tools & Technologies
 
 * **Language:** SystemVerilog
 * **FSM Capture:** Quartus Prime State Machine Wizard
