@@ -78,7 +78,9 @@ The FSM controller was designed graphically using Intel Quartus Prime:
 
 ### Top-Level View (`ugcd`)
 
-![Top-Level RTL View](path/to/top_level_rtl.png)
+<p align="center">
+<img width="501" height="209" alt="GCD_RTL_DIAGRAM_TOP_VIEW" src="https://github.com/user-attachments/assets/d3476eaf-1e7e-4ac1-b274-0b8724ccaa5d" />
+</p>
 
 ### Submodules Breakdown
 
